@@ -95,10 +95,10 @@ static u32 GenRandomInst(u64 pc, bool is_last_inst) {
                 continue;
             }
             if (std::find(do_not_test.begin(), do_not_test.end(), fn) != do_not_test.end()) {
-                invalid.emplace_back(InstructionGenerator{bitstring});
+                invalid.emplace_back(InstructionGenerator{fn, bitstring});
                 continue;
             }
-            generators.emplace_back(InstructionGenerator{bitstring});
+            generators.emplace_back(InstructionGenerator{fn, bitstring});
         }
         return InstructionGeneratorInfo{generators, invalid};
     }();
@@ -137,7 +137,7 @@ static u32 GenFloatInst(u64 pc, bool is_last_inst) {
             } else if (std::find(do_not_test.begin(), do_not_test.end(), fn) != do_not_test.end()) {
                 continue;
             }
-            result.emplace_back(InstructionGenerator{bitstring});
+            result.emplace_back(InstructionGenerator{fn, bitstring});
         }
 
         return result;

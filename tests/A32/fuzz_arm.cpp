@@ -124,10 +124,10 @@ u32 GenRandomArmInst(u32 pc, bool is_last_inst) {
 
         for (const auto& [fn, bitstring] : list) {
             if (std::find(do_not_test.begin(), do_not_test.end(), fn) != do_not_test.end()) {
-                invalid.emplace_back(InstructionGenerator{bitstring});
+                invalid.emplace_back(InstructionGenerator{fn, bitstring});
                 continue;
             }
-            generators.emplace_back(InstructionGenerator{bitstring});
+            generators.emplace_back(InstructionGenerator{fn, bitstring});
         }
         return InstructionGeneratorInfo{generators, invalid};
     }();
@@ -214,10 +214,10 @@ std::vector<u16> GenRandomThumbInst(u32 pc, bool is_last_inst, A32::ITState it_s
 
         for (const auto& [fn, bitstring] : list) {
             if (std::find(do_not_test.begin(), do_not_test.end(), fn) != do_not_test.end()) {
-                invalid.emplace_back(InstructionGenerator{bitstring});
+                invalid.emplace_back(InstructionGenerator{fn, bitstring});
                 continue;
             }
-            generators.emplace_back(InstructionGenerator{bitstring});
+            generators.emplace_back(InstructionGenerator{fn, bitstring});
         }
         for (const auto& [fn, bs] : vfp_list) {
             std::string bitstring = bs;
@@ -225,10 +225,10 @@ std::vector<u16> GenRandomThumbInst(u32 pc, bool is_last_inst, A32::ITState it_s
                 bitstring.replace(0, 4, "1110");
             }
             if (std::find(do_not_test.begin(), do_not_test.end(), fn) != do_not_test.end()) {
-                invalid.emplace_back(InstructionGenerator{bitstring.c_str()});
+                invalid.emplace_back(InstructionGenerator{fn, bitstring.c_str()});
                 continue;
             }
-            generators.emplace_back(InstructionGenerator{bitstring.c_str()});
+            generators.emplace_back(InstructionGenerator{fn, bitstring.c_str()});
         }
         for (const auto& [fn, bs] : asimd_list) {
             std::string bitstring = bs;
@@ -242,10 +242,10 @@ std::vector<u16> GenRandomThumbInst(u32 pc, bool is_last_inst, A32::ITState it_s
                 ASSERT_FALSE("Unhandled ASIMD instruction: {} {}", fn, bs);
             }
             if (std::find(do_not_test.begin(), do_not_test.end(), fn) != do_not_test.end()) {
-                invalid.emplace_back(InstructionGenerator{bitstring.c_str()});
+                invalid.emplace_back(InstructionGenerator{fn, bitstring.c_str()});
                 continue;
             }
-            generators.emplace_back(InstructionGenerator{bitstring.c_str()});
+            generators.emplace_back(InstructionGenerator{fn, bitstring.c_str()});
         }
         return InstructionGeneratorInfo{generators, invalid};
     }();
