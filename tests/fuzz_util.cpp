@@ -35,7 +35,8 @@ u32 RandomFpcr() {
     return fpcr.Value();
 }
 
-InstructionGenerator::InstructionGenerator(const char* format) {
+InstructionGenerator::InstructionGenerator(const std::string& name, const char* format)
+        : name(name) {
     const size_t format_len = std::strlen(format);
     ASSERT(format_len == 16 || format_len == 32);
 

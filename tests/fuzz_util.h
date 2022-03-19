@@ -7,6 +7,7 @@
 
 #include <array>
 #include <iosfwd>
+#include <string>
 
 #include "dynarmic/common/common_types.h"
 
@@ -18,14 +19,16 @@ u32 RandomFpcr();
 
 struct InstructionGenerator final {
 public:
-    explicit InstructionGenerator(const char* format);
+    InstructionGenerator(const std::string& name, const char* format);
 
     u32 Generate() const;
     u32 Bits() const { return bits; }
     u32 Mask() const { return mask; }
     bool Match(u32 inst) const { return (inst & mask) == bits; }
+    const std::string& Name() const { return name; }
 
 private:
+    std::string name;
     u32 bits = 0;
     u32 mask = 0;
 };

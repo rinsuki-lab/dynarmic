@@ -255,6 +255,10 @@ std::vector<u16> GenRandomThumbInst(u32 pc, bool is_last_inst, A32::ITState it_s
         const u32 inst = instructions.generators[index].Generate();
         const bool is_four_bytes = (inst >> 16) != 0;
 
+        if (std::any_of(instructions.invalid.begin(), instructions.invalid.end(), [inst](const auto& invalid) { return invalid.Match(inst); })) {
+            continue;
+        }
+
         if (ShouldTestInst(is_four_bytes ? Common::SwapHalves32(inst) : inst, pc, true, is_last_inst, it_state)) {
             if (is_four_bytes)
                 return {static_cast<u16>(inst >> 16), static_cast<u16>(inst)};
