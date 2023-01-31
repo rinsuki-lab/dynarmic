@@ -266,12 +266,14 @@ static void RunTestInstance(Dynarmic::A64::Jit& jit, A64Unicorn& uni, A64TestEnv
         IR::Block ir_block = A64::Translate({instructions_start, FP::FPCR{fpcr}}, get_code, {});
         Optimization::A64CallbackConfigPass(ir_block, GetUserConfig(jit_env));
         fmt::print("IR:\n");
+        Optimization::NamingPass(ir_block);
         fmt::print("{}\n", IR::DumpBlock(ir_block));
 
         Optimization::A64GetSetElimination(ir_block);
         Optimization::DeadCodeElimination(ir_block);
         Optimization::ConstantPropagation(ir_block);
         Optimization::DeadCodeElimination(ir_block);
+        Optimization::NamingPass(ir_block);
         fmt::print("Optimized IR:\n");
         fmt::print("{}\n", IR::DumpBlock(ir_block));
 

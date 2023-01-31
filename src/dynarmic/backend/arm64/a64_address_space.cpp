@@ -344,6 +344,7 @@ IR::Block A64AddressSpace::GenerateIR(IR::LocationDescriptor descriptor) const {
     if (conf.HasOptimization(OptimizationFlag::MiscIROpt)) {
         Optimization::A64MergeInterpretBlocksPass(ir_block, conf.callbacks);
     }
+    Optimization::NamingPass(ir_block);
     Optimization::VerificationPass(ir_block);
 
     return ir_block;

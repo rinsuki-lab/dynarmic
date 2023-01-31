@@ -72,7 +72,9 @@ public:
         PerformRequestedCacheInvalidation();
 
         is_executing = true;
-        SCOPE_EXIT { this->is_executing = false; };
+        SCOPE_EXIT {
+            this->is_executing = false;
+        };
 
         // TODO: Check code alignment
 
@@ -99,7 +101,9 @@ public:
         PerformRequestedCacheInvalidation();
 
         is_executing = true;
-        SCOPE_EXIT { this->is_executing = false; };
+        SCOPE_EXIT {
+            this->is_executing = false;
+        };
 
         const HaltReason hr = block_of_code.StepCode(&jit_state, GetCurrentSingleStep());
 
@@ -284,6 +288,7 @@ private:
         if (conf.HasOptimization(OptimizationFlag::MiscIROpt)) {
             Optimization::A64MergeInterpretBlocksPass(ir_block, conf.callbacks);
         }
+        Optimization::NamingPass(ir_block);
         Optimization::VerificationPass(ir_block);
         return emitter.Emit(ir_block).entrypoint;
     }

@@ -35,10 +35,6 @@ EmitContext::EmitContext(RegAlloc& reg_alloc, IR::Block& block)
 
 EmitContext::~EmitContext() = default;
 
-size_t EmitContext::GetInstOffset(IR::Inst* inst) const {
-    return static_cast<size_t>(std::distance(block.begin(), IR::Block::iterator(inst)));
-}
-
 void EmitContext::EraseInstruction(IR::Inst* inst) {
     block.Instructions().erase(inst);
     inst->ClearArgs();
@@ -388,7 +384,9 @@ void EmitX64::ClearCache() {
 
 void EmitX64::InvalidateBasicBlocks(const tsl::robin_set<IR::LocationDescriptor>& locations) {
     code.EnableWriting();
-    SCOPE_EXIT { code.DisableWriting(); };
+    SCOPE_EXIT {
+        code.DisableWriting();
+    };
 
     for (const auto& descriptor : locations) {
         const auto it = block_descriptors.find(descriptor);

@@ -62,6 +62,7 @@ void PrintA32Instruction(u32 instruction) {
     const bool should_continue = A32::TranslateSingleInstruction(block, location, instruction);
     fmt::print("should_continue: {}\n\n", should_continue);
     fmt::print("IR:\n");
+    Optimization::NamingPass(block);
     fmt::print("{}\n", IR::DumpBlock(block));
 
     Optimization::A32GetSetElimination(block, {});
@@ -69,6 +70,7 @@ void PrintA32Instruction(u32 instruction) {
     Optimization::ConstantPropagation(block);
     Optimization::DeadCodeElimination(block);
     Optimization::IdentityRemovalPass(block);
+    Optimization::NamingPass(block);
 
     fmt::print("Optimized IR:\n");
     fmt::print("{}\n", IR::DumpBlock(block));
@@ -83,6 +85,7 @@ void PrintA64Instruction(u32 instruction) {
     const bool should_continue = A64::TranslateSingleInstruction(block, location, instruction);
     fmt::print("should_continue: {}\n\n", should_continue);
     fmt::print("IR:\n");
+    Optimization::NamingPass(block);
     fmt::print("{}\n", IR::DumpBlock(block));
 
     Optimization::A64GetSetElimination(block);
@@ -90,6 +93,7 @@ void PrintA64Instruction(u32 instruction) {
     Optimization::ConstantPropagation(block);
     Optimization::DeadCodeElimination(block);
     Optimization::IdentityRemovalPass(block);
+    Optimization::NamingPass(block);
 
     fmt::print("Optimized IR:\n");
     fmt::print("{}\n", IR::DumpBlock(block));
@@ -107,6 +111,7 @@ void PrintThumbInstruction(u32 instruction) {
     const bool should_continue = A32::TranslateSingleInstruction(block, location, instruction);
     fmt::print("should_continue: {}\n\n", should_continue);
     fmt::print("IR:\n");
+    Optimization::NamingPass(block);
     fmt::print("{}\n", IR::DumpBlock(block));
 
     Optimization::A32GetSetElimination(block, {});
@@ -114,6 +119,7 @@ void PrintThumbInstruction(u32 instruction) {
     Optimization::ConstantPropagation(block);
     Optimization::DeadCodeElimination(block);
     Optimization::IdentityRemovalPass(block);
+    Optimization::NamingPass(block);
 
     fmt::print("Optimized IR:\n");
     fmt::print("{}\n", IR::DumpBlock(block));

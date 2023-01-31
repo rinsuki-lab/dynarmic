@@ -183,6 +183,7 @@ private:
             Optimization::ConstantPropagation(ir_block);
             Optimization::DeadCodeElimination(ir_block);
         }
+        Optimization::NamingPass(ir_block);
         Optimization::VerificationPass(ir_block);
         return emitter.Emit(ir_block);
     }
@@ -196,7 +197,9 @@ Jit::~Jit() = default;
 HaltReason Jit::Run() {
     ASSERT(!is_executing);
     is_executing = true;
-    SCOPE_EXIT { this->is_executing = false; };
+    SCOPE_EXIT {
+        this->is_executing = false;
+    };
 
     const HaltReason hr = impl->Execute();
 
@@ -208,7 +211,9 @@ HaltReason Jit::Run() {
 HaltReason Jit::Step() {
     ASSERT(!is_executing);
     is_executing = true;
-    SCOPE_EXIT { this->is_executing = false; };
+    SCOPE_EXIT {
+        this->is_executing = false;
+    };
 
     const HaltReason hr = impl->Step();
 

@@ -174,6 +174,7 @@ IR::Block A32AddressSpace::GenerateIR(IR::LocationDescriptor descriptor) const {
         Optimization::ConstantPropagation(ir_block);
         Optimization::DeadCodeElimination(ir_block);
     }
+    Optimization::NamingPass(ir_block);
     Optimization::VerificationPass(ir_block);
 
     return ir_block;
