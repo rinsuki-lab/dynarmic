@@ -30,7 +30,7 @@ public:
 #if defined(_WIN32)
         m_memory = (std::uint32_t*)VirtualAlloc(nullptr, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 #elif defined(__APPLE__)
-        m_memory = (std::uint32_t*)mmap(nullptr, size, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANON | MAP_PRIVATE | MAP_JIT, -1, 0);
+        m_memory = (std::uint32_t*)mmap(nullptr, size, PROT_READ | PROT_EXEC, MAP_ANON | MAP_PRIVATE, -1, 0);
 #else
         m_memory = (std::uint32_t*)mmap(nullptr, size, PROT_READ | PROT_WRITE | PROT_EXEC, MAP_ANON | MAP_PRIVATE, -1, 0);
 #endif
@@ -64,14 +64,16 @@ public:
     void protect()
     {
 #if defined(__APPLE__)
-        pthread_jit_write_protect_np(1);
+        mprotect(m_memory, m_size, PROT_READ | PROT_EXEC);
+//        pthread_jit_write_protect_np(1);
 #endif
     }
 
     void unprotect()
     {
 #if defined(__APPLE__)
-        pthread_jit_write_protect_np(0);
+        mprotect(m_memory, m_size, PROT_READ | PROT_WRITE);
+//        pthread_jit_write_protect_np(0);
 #endif
     }
 
