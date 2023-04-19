@@ -44,7 +44,7 @@ struct SpinLockImpl {
     void (*unlock)(volatile int*);
 };
 
-SpinLockImpl impl;
+SpinLockImpl* impl;
 
 SpinLockImpl::SpinLockImpl()
         : mem{4096}
@@ -65,11 +65,17 @@ SpinLockImpl::SpinLockImpl()
 }  // namespace
 
 void SpinLock::Lock() {
-    impl.lock(&storage);
+    if (__builtin_expect(impl == nullptr, 0)) {
+        impl = new SpinLockImpl();
+    }
+    impl->lock(&storage);
 }
 
 void SpinLock::Unlock() {
-    impl.unlock(&storage);
+    if (__builtin_expect(impl == nullptr, 0)) {
+        impl = new SpinLockImpl();
+    }
+    impl->unlock(&storage);
 }
 
 }  // namespace Dynarmic
